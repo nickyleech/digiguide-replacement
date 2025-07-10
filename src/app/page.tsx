@@ -93,48 +93,56 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <header className="relative overflow-hidden">
         {/* Navigation */}
-        <nav className="relative z-20 px-4 sm:px-6 lg:px-8 pt-6">
+        <nav className="relative z-20 px-4 sm:px-6 lg:px-8 py-4 bg-white shadow-sm">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="gradient-bg p-2 rounded-xl">
-                <Tv className="w-8 h-8 text-white" />
+            <div className="flex items-center space-x-3">
+              <div className="gradient-bg p-2 rounded-lg">
+                <Tv className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-secondary-900">digiguide.tv</span>
+              <span className="text-xl font-bold text-gray-900">digiguide.tv</span>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm">Sign In</Button>
-              <Button size="sm" onClick={() => window.location.href = '/guide'}>View Guide</Button>
+              <button className="text-gray-600 hover:text-gray-900 font-medium">Sign In</button>
+              <button 
+                onClick={() => window.location.href = '/guide'}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                View Guide
+              </button>
             </div>
           </div>
         </nav>
 
         {/* Hero Content */}
-        <div className="relative z-10 px-4 sm:px-6 lg:px-8 pt-20 pb-32">
-          <div className="max-w-7xl mx-auto">
+        <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-20">
+          <div className="max-w-6xl mx-auto">
             <div className="text-center">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-secondary-900 mb-6">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
                 The Future of
-                <span className="block gradient-bg bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
                   TV Listings
                 </span>
               </h1>
-              <p className="text-xl sm:text-2xl text-secondary-600 mb-8 max-w-3xl mx-auto">
+              <p className="text-xl sm:text-2xl text-gray-600 mb-10 max-w-4xl mx-auto leading-relaxed">
                 Experience the most beautiful and comprehensive TV guide for UK television. 
                 Never miss your favourite programmes again.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-                <Button size="lg" className="w-full sm:w-auto" onClick={() => window.location.href = '/guide'}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                <button 
+                  onClick={() => window.location.href = '/guide'}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors flex items-center"
+                >
                   View TV Guide
                   <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                </button>
+                <button className="border-2 border-gray-300 text-gray-700 hover:border-gray-400 px-8 py-4 rounded-lg font-semibold text-lg transition-colors flex items-center">
                   <Play className="w-5 h-5 mr-2" />
                   Watch Demo
-                </Button>
+                </button>
               </div>
               
               {/* Platform Selector */}
