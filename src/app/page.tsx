@@ -10,17 +10,11 @@ export default function HomePage() {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   const [mounted, setMounted] = useState(false)
-  const [debugCounter, setDebugCounter] = useState(0)
   
   // Ensure component is mounted on client side
   useEffect(() => {
     setMounted(true)
   }, [])
-  
-  // Monitor modal state changes
-  useEffect(() => {
-    console.log('Modal state changed:', showAuthModal)
-  }, [showAuthModal])
   
   if (!mounted) {
     return (
@@ -36,28 +30,8 @@ export default function HomePage() {
   }
 
   const handleAuthClick = (mode: 'login' | 'register') => {
-    alert(`Button clicked: ${mode}`)
-    console.log('handleAuthClick called')
-    console.log('Current showAuthModal:', showAuthModal)
-    console.log('Current debugCounter:', debugCounter)
-    
-    // Test if state functions are actually being called
-    console.log('About to call setDebugCounter')
-    setDebugCounter(prev => {
-      console.log('setDebugCounter callback - prev:', prev, 'new:', prev + 1)
-      return prev + 1
-    })
-    
-    console.log('About to call setAuthMode')
     setAuthMode(mode)
-    
-    console.log('About to call setShowAuthModal')
-    setShowAuthModal(prev => {
-      console.log('setShowAuthModal callback - prev:', prev, 'new:', true)
-      return true
-    })
-    
-    console.log('All state updates called')
+    setShowAuthModal(true)
   }
 
   return (
@@ -75,38 +49,17 @@ export default function HomePage() {
               </h2>
               <div className="flex justify-center space-x-4">
                 <button 
-                  onClick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    console.log('Button click event fired')
-                    handleAuthClick('login')
-                  }}
+                  onClick={() => handleAuthClick('login')}
                   className="btn-primary"
                 >
                   Sign in
                 </button>
                 <button 
-                  onClick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    console.log('Button click event fired')
-                    handleAuthClick('register')
-                  }}
+                  onClick={() => handleAuthClick('register')}
                   className="btn-secondary"
                 >
                   Create account
                 </button>
-              </div>
-              <div className="mt-4 text-center">
-                <p className="text-sm text-gray-600">
-                  Modal state: {showAuthModal ? 'OPEN' : 'CLOSED'}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Auth state: {isAuthenticated ? 'AUTHENTICATED' : 'NOT AUTHENTICATED'}
-                </p>
-                <p className="text-sm text-gray-400">
-                  Debug counter: {debugCounter}
-                </p>
               </div>
             </div>
           </div>
@@ -203,29 +156,7 @@ export default function HomePage() {
         </div>
       </footer>
 
-      {/* Debug info */}
-      {showAuthModal && (
-        <div className="fixed top-4 right-4 bg-red-500 text-white p-2 rounded z-[10000]">
-          Modal should be open: {showAuthModal.toString()}
-        </div>
-      )}
     </div>
-    
-    {/* Test modal */}
-    {showAuthModal && (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
-          <h2 className="text-2xl font-bold mb-4">Test Modal</h2>
-          <p className="mb-4">This is a test modal to verify the modal functionality is working.</p>
-          <button
-            onClick={() => setShowAuthModal(false)}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    )}
     
     <AuthModal
       isOpen={showAuthModal}
