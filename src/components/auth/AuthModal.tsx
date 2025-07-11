@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
@@ -13,6 +13,11 @@ interface AuthModalProps {
 
 export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalProps) {
   const [mode, setMode] = useState<'login' | 'register'>(initialMode)
+  
+  // Update mode when initialMode changes
+  useEffect(() => {
+    setMode(initialMode)
+  }, [initialMode])
 
   if (!isOpen) return null
 
