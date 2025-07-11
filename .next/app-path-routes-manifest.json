@@ -1,20 +1,20 @@
 {
   "/_not-found/page": "/_not-found",
-  "/admin/billing/offer-codes/page": "/admin/billing/offer-codes",
   "/admin/corporate/accounts/page": "/admin/corporate/accounts",
   "/admin/channels/page": "/admin/channels",
   "/admin/corporate/users/page": "/admin/corporate/users",
-  "/admin/page": "/admin",
+  "/admin/billing/offer-codes/page": "/admin/billing/offer-codes",
   "/admin/billing/payments/page": "/admin/billing/payments",
-  "/page": "/",
+  "/admin/page": "/admin",
   "/guide/page": "/guide",
   "/admin/users/page": "/admin/users",
-  "/minimalist-demo/page": "/minimalist-demo",
-  "/help/page": "/help",
+  "/page": "/",
   "/preferences/page": "/preferences",
+  "/help/page": "/help",
   "/reminders/page": "/reminders",
   "/search/page": "/search",
   "/user/page": "/user",
   "/checkout-demo/page": "/checkout-demo",
-  "/watchlist/page": "/watchlist"
+  "/watchlist/page": "/watchlist",
+  "/minimalist-demo/page": "/minimalist-demo"
 }

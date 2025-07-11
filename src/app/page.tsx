@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import AuthModal from '@/components/auth/AuthModal'
 import Navigation from '@/components/Navigation'
@@ -9,8 +9,28 @@ export default function HomePage() {
   const { isAuthenticated } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
+  const [mounted, setMounted] = useState(false)
+  
+  // Ensure component is mounted on client side
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-primary-50">
+        <Navigation />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const handleAuthClick = (mode: 'login' | 'register') => {
+    alert(`Button clicked: ${mode}`)
     setAuthMode(mode)
     setShowAuthModal(true)
   }
@@ -42,6 +62,11 @@ export default function HomePage() {
                   >
                     Create account
                   </button>
+                </div>
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-gray-600">
+                    Modal state: {showAuthModal ? 'OPEN' : 'CLOSED'}
+                  </p>
                 </div>
               </div>
             </div>
