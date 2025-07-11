@@ -28,10 +28,100 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/admin/billing/offer-codes",
+      "regex": "^/admin/billing/offer\\-codes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/billing/offer\\-codes(?:/)?$"
+    },
+    {
+      "page": "/admin/billing/payments",
+      "regex": "^/admin/billing/payments(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/billing/payments(?:/)?$"
+    },
+    {
+      "page": "/admin/channels",
+      "regex": "^/admin/channels(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/channels(?:/)?$"
+    },
+    {
+      "page": "/admin/corporate/accounts",
+      "regex": "^/admin/corporate/accounts(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/corporate/accounts(?:/)?$"
+    },
+    {
+      "page": "/admin/corporate/users",
+      "regex": "^/admin/corporate/users(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/corporate/users(?:/)?$"
+    },
+    {
+      "page": "/admin/users",
+      "regex": "^/admin/users(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/users(?:/)?$"
+    },
+    {
+      "page": "/checkout-demo",
+      "regex": "^/checkout\\-demo(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/checkout\\-demo(?:/)?$"
+    },
+    {
       "page": "/guide",
       "regex": "^/guide(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/guide(?:/)?$"
+    },
+    {
+      "page": "/help",
+      "regex": "^/help(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/help(?:/)?$"
+    },
+    {
+      "page": "/minimalist-demo",
+      "regex": "^/minimalist\\-demo(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/minimalist\\-demo(?:/)?$"
+    },
+    {
+      "page": "/preferences",
+      "regex": "^/preferences(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/preferences(?:/)?$"
+    },
+    {
+      "page": "/reminders",
+      "regex": "^/reminders(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/reminders(?:/)?$"
+    },
+    {
+      "page": "/search",
+      "regex": "^/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/search(?:/)?$"
+    },
+    {
+      "page": "/user",
+      "regex": "^/user(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user(?:/)?$"
+    },
+    {
+      "page": "/watchlist",
+      "regex": "^/watchlist(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/watchlist(?:/)?$"
     }
   ],
   "dataRoutes": [],

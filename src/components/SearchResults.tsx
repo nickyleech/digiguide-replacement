@@ -305,7 +305,7 @@ export default function SearchResults({
                           console.log('Suggested search:', suggestion);
                         }}
                       >
-                        {suggestion.text}
+                        {suggestion}
                       </button>
                     ))}
                   </div>
@@ -385,7 +385,7 @@ export default function SearchResults({
                   programme={selectedProgramme}
                   channelName={selectedProgramme.channel}
                   size="md"
-                  variant="full"
+                  variant="button"
                 />
               </div>
             </div>

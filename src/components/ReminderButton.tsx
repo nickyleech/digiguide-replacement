@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Bell, BellOff, Clock, Settings } from 'lucide-react';
-import { Programme } from '@/lib/epgService';
+import { Programme } from '@/types';
 import { reminderService } from '@/lib/reminderService';
 import { useAuth } from '@/contexts/AuthContext';
 import { NOTIFICATION_TIMINGS } from '@/lib/reminders';

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Tv, HelpCircle, User, LogOut, Bookmark, Bell, Search } from 'lucide-react'
+import { Tv, HelpCircle, User, LogOut, Bookmark, Bell, Search, Settings } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import AuthModal from './auth/AuthModal'
 
@@ -28,114 +28,114 @@ export default function MinimalistNavigation({ currentPage = 'guide' }: Minimali
 
   return (
     <>
-      <nav className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-12 py-8">
+      <nav className="bg-white border-b border-black">
+        <div className="max-w-7xl mx-auto px-12 py-12">
           <div className="flex items-center justify-between">
             
             {/* Logo */}
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                <Tv className="w-6 h-6 text-gray-700" />
-              </div>
-              <span className="text-xl font-light text-gray-900 tracking-wide">
+            <div className="flex items-center space-x-6">
+              <span className="text-2xl font-light text-black tracking-wide">
                 digiguide.tv
               </span>
             </div>
 
             {/* Navigation Items */}
-            <div className="flex items-center space-x-12">
+            <div className="flex items-center space-x-16">
               <button
                 onClick={() => handleNavigation('/guide')}
-                className={`flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 ${
+                className={`text-xl font-light transition-colors ${
                   currentPage === 'guide' 
-                    ? 'bg-gray-100 text-gray-900' 
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'text-black' 
+                    : 'text-gray-400 hover:text-black'
                 }`}
               >
-                <Tv className="w-5 h-5" />
-                <span className="font-light">Guide</span>
+                Guide
               </button>
               
               <button
                 onClick={() => handleNavigation('/search')}
-                className={`flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 ${
+                className={`text-xl font-light transition-colors ${
                   currentPage === 'search' 
-                    ? 'bg-gray-100 text-gray-900' 
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'text-black' 
+                    : 'text-gray-400 hover:text-black'
                 }`}
               >
-                <Search className="w-5 h-5" />
-                <span className="font-light">Search</span>
+                Search
               </button>
               
               <button
                 onClick={() => handleNavigation('/help')}
-                className={`flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 ${
+                className={`text-xl font-light transition-colors ${
                   currentPage === 'help' 
-                    ? 'bg-gray-100 text-gray-900' 
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'text-black' 
+                    : 'text-gray-400 hover:text-black'
                 }`}
               >
-                <HelpCircle className="w-5 h-5" />
-                <span className="font-light">Help</span>
+                Help
               </button>
               
               {isAuthenticated ? (
                 <>
                   <button
                     onClick={() => handleNavigation('/watchlist')}
-                    className={`flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 ${
+                    className={`text-xl font-light transition-colors ${
                       currentPage === 'watchlist' 
-                        ? 'bg-gray-100 text-gray-900' 
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                        ? 'text-black' 
+                        : 'text-gray-400 hover:text-black'
                     }`}
                   >
-                    <Bookmark className="w-5 h-5" />
-                    <span className="font-light">Watchlist</span>
+                    Watchlist
                   </button>
                   <button
                     onClick={() => handleNavigation('/reminders')}
-                    className={`flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 ${
+                    className={`text-xl font-light transition-colors ${
                       currentPage === 'reminders' 
-                        ? 'bg-gray-100 text-gray-900' 
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                        ? 'text-black' 
+                        : 'text-gray-400 hover:text-black'
                     }`}
                   >
-                    <Bell className="w-5 h-5" />
-                    <span className="font-light">Reminders</span>
+                    Reminders
                   </button>
                   <button
                     onClick={() => handleNavigation('/user')}
-                    className={`flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 ${
+                    className={`text-xl font-light transition-colors ${
                       currentPage === 'user' 
-                        ? 'bg-gray-100 text-gray-900' 
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                        ? 'text-black' 
+                        : 'text-gray-400 hover:text-black'
                     }`}
                   >
-                    <User className="w-5 h-5" />
-                    <span className="font-light">Profile</span>
+                    Profile
+                  </button>
+                  <button
+                    onClick={() => handleNavigation('/preferences')}
+                    className={`text-xl font-light transition-colors ${
+                      currentPage === 'preferences' 
+                        ? 'text-black' 
+                        : 'text-gray-400 hover:text-black'
+                    }`}
+                  >
+                    Preferences
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    className="text-xl font-light text-gray-400 hover:text-black transition-colors"
                   >
-                    <LogOut className="w-5 h-5" />
-                    <span className="font-light">Sign out</span>
+                    Sign out
                   </button>
                 </>
               ) : (
                 <>
                   <button
                     onClick={() => handleAuthClick('login')}
-                    className="flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    className="text-xl font-light text-gray-400 hover:text-black transition-colors"
                   >
-                    <span className="font-light">Sign in</span>
+                    Sign in
                   </button>
                   <button
                     onClick={() => handleAuthClick('register')}
-                    className="flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 bg-gray-900 text-white hover:bg-gray-800"
+                    className="text-xl font-light bg-black text-white px-8 py-4 hover:bg-gray-800 transition-colors"
                   >
-                    <span className="font-light">Sign up</span>
+                    Sign up
                   </button>
                 </>
               )}

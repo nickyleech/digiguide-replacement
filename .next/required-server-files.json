@@ -49,10 +49,7 @@
       "path": "/_next/image",
       "loader": "default",
       "loaderFile": "",
-      "domains": [
-        "images.unsplash.com",
-        "via.placeholder.com"
-      ],
+      "domains": [],
       "disableStaticImages": false,
       "minimumCacheTTL": 60,
       "formats": [
@@ -61,7 +58,16 @@
       "dangerouslyAllowSVG": false,
       "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;",
       "contentDispositionType": "attachment",
-      "remotePatterns": [],
+      "remotePatterns": [
+        {
+          "protocol": "https",
+          "hostname": "images.unsplash.com"
+        },
+        {
+          "protocol": "https",
+          "hostname": "via.placeholder.com"
+        }
+      ],
       "unoptimized": false
     },
     "devIndicators": {
@@ -91,6 +97,7 @@
     "logging": {},
     "expireTime": 31536000,
     "staticPageGenerationTimeout": 60,
+    "output": "standalone",
     "modularizeImports": {
       "@mui/icons-material": {
         "transform": "@mui/icons-material/{{member}}"
@@ -99,7 +106,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/Users/nickyleech/Digiguide Replacement/tv-guide-app",
+    "outputFileTracingRoot": "/Users/nickyleech/Digiguide Replacement",
     "experimental": {
       "nodeMiddleware": false,
       "cacheLife": {
@@ -282,10 +289,10 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.js",
     "turbopack": {
-      "root": "/Users/nickyleech/Digiguide Replacement/tv-guide-app"
+      "root": "/Users/nickyleech/Digiguide Replacement"
     }
   },
-  "appDir": "/Users/nickyleech/Digiguide Replacement/tv-guide-app",
+  "appDir": "/Users/nickyleech/Digiguide Replacement",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",

@@ -117,7 +117,13 @@ export class EPGService {
   private getMockProgrammes(): Programme[] {
     const now = new Date()
     const programmes: Programme[] = []
-    const channels = ['bbc-one', 'bbc-two', 'itv1', 'channel-4', 'channel-5']
+    const channels = [
+      { id: 'bbc-one', name: 'BBC One' },
+      { id: 'bbc-two', name: 'BBC Two' },
+      { id: 'itv1', name: 'ITV1' },
+      { id: 'channel-4', name: 'Channel 4' },
+      { id: 'channel-5', name: 'Channel 5' }
+    ]
     
     const programmeTemplates = [
       { title: 'BBC News', description: 'The latest national and international news', genre: 'News', duration: 30 },
@@ -132,7 +138,7 @@ export class EPGService {
       { title: 'MasterChef', description: 'Cookery competition', genre: 'Reality', duration: 60 }
     ]
 
-    channels.forEach(channelId => {
+    channels.forEach(channel => {
       for (let hour = 6; hour < 24; hour++) {
         const startTime = new Date(now)
         startTime.setHours(hour, 0, 0, 0)
@@ -141,13 +147,14 @@ export class EPGService {
         const endTime = new Date(startTime.getTime() + template.duration * 60000)
         
         programmes.push({
-          id: `${channelId}-${hour}`,
+          id: `${channel.id}-${hour}`,
           title: template.title,
           description: template.description,
           genre: template.genre,
           startTime: startTime.toISOString(),
           endTime: endTime.toISOString(),
-          channelId,
+          channelId: channel.id,
+          channel: channel.name,
           duration: template.duration,
           rating: Math.random() > 0.5 ? 'PG' : 'U'
         })

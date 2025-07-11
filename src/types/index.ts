@@ -51,12 +51,46 @@ export interface User {
 }
 
 export interface UserPreferences {
-  favouriteChannels: string[]
-  favouriteGenres: string[]
-  reminderSettings: {
+  channels: {
+    order: string[]
+    hidden: string[]
+    favourites: string[]
+  }
+  viewing: {
+    timeFormat: '12' | '24'
+    theme: 'light' | 'dark' | 'auto'
+    gridLayout: 'compact' | 'comfortable' | 'spacious'
+    autoRefresh: boolean
+    showNowPlaying: boolean
+  }
+  notifications: {
     email: boolean
     push: boolean
     advanceTime: number
+    suggestions: boolean
+  }
+  parental: {
+    enabled: boolean
+    pin: string
+    allowedRatings: string[]
+    restrictedGenres: string[]
+  }
+  locale: {
+    language: string
+    region: string
+    timezone: string
+  }
+  privacy: {
+    dataCollection: boolean
+    personalisation: boolean
+    thirdPartySharing: boolean
+    marketingEmails: boolean
+  }
+  quickActions: {
+    showWatchlist: boolean
+    showReminders: boolean
+    showSearch: boolean
+    showChannelGuide: boolean
   }
 }
 
