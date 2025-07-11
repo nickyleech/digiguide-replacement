@@ -16,6 +16,11 @@ export default function HomePage() {
     setMounted(true)
   }, [])
   
+  // Monitor modal state changes
+  useEffect(() => {
+    console.log('Modal state changed:', showAuthModal)
+  }, [showAuthModal])
+  
   if (!mounted) {
     return (
       <div className="min-h-screen bg-primary-50">
@@ -31,8 +36,13 @@ export default function HomePage() {
 
   const handleAuthClick = (mode: 'login' | 'register') => {
     alert(`Button clicked: ${mode}`)
+    console.log('Before state update:', showAuthModal)
     setAuthMode(mode)
-    setShowAuthModal(true)
+    setShowAuthModal(prev => {
+      console.log('State update:', prev, '->', true)
+      return true
+    })
+    console.log('After state update call')
   }
 
   return (
@@ -41,38 +51,39 @@ export default function HomePage() {
       <Navigation />
       
       {/* Sign In Section */}
-      {!isAuthenticated && (
-        <section className="py-8 bg-primary-50 border-b border-primary-200">
-          <div className="max-w-4xl mx-auto px-6">
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="text-center space-y-4">
-                <h2 className="text-xl font-light text-primary-800">
-                  Sign in to access your account
-                </h2>
-                <div className="flex justify-center space-x-4">
-                  <button 
-                    onClick={() => handleAuthClick('login')}
-                    className="btn-primary"
-                  >
-                    Sign in
-                  </button>
-                  <button 
-                    onClick={() => handleAuthClick('register')}
-                    className="btn-secondary"
-                  >
-                    Create account
-                  </button>
-                </div>
-                <div className="mt-4 text-center">
-                  <p className="text-sm text-gray-600">
-                    Modal state: {showAuthModal ? 'OPEN' : 'CLOSED'}
-                  </p>
-                </div>
+      <section className="py-8 bg-primary-50 border-b border-primary-200">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="text-center space-y-4">
+              <h2 className="text-xl font-light text-primary-800">
+                Sign in to access your account
+              </h2>
+              <div className="flex justify-center space-x-4">
+                <button 
+                  onClick={() => handleAuthClick('login')}
+                  className="btn-primary"
+                >
+                  Sign in
+                </button>
+                <button 
+                  onClick={() => handleAuthClick('register')}
+                  className="btn-secondary"
+                >
+                  Create account
+                </button>
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-600">
+                  Modal state: {showAuthModal ? 'OPEN' : 'CLOSED'}
+                </p>
+                <p className="text-sm text-gray-500">
+                  Auth state: {isAuthenticated ? 'AUTHENTICATED' : 'NOT AUTHENTICATED'}
+                </p>
               </div>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
 
       {/* Access Section */}
