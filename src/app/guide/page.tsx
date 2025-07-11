@@ -1,21 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/Button'
 import { ElegantTVGuide } from '@/components/ElegantTVGuide'
+import MinimalistNavigation from '@/components/MinimalistNavigation'
 import { 
-  Tv, 
-  Settings, 
-  User, 
   Search,
-  Filter,
-  Bell,
-  Star,
-  Grid,
-  List,
-  Calendar,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Calendar
 } from 'lucide-react'
 
 export default function GuidePage() {
@@ -29,15 +21,15 @@ export default function GuidePage() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date())
-    }, 60000) // Update every minute
+    }, 60000)
     return () => clearInterval(timer)
   }, [])
 
   const platforms = [
-    { id: 'freeview', name: 'Freeview', color: 'bg-blue-500' },
-    { id: 'sky', name: 'Sky', color: 'bg-sky-500' },
-    { id: 'virgin', name: 'Virgin Media', color: 'bg-red-500' },
-    { id: 'freesat', name: 'Freesat', color: 'bg-green-500' },
+    { id: 'freeview', name: 'Freeview' },
+    { id: 'sky', name: 'Sky' },
+    { id: 'virgin', name: 'Virgin Media' },
+    { id: 'freesat', name: 'Freesat' },
   ]
 
   const getDates = () => {
@@ -69,28 +61,24 @@ export default function GuidePage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14">
-            {/* Logo */}
-            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => window.location.href = '/'}>
-              <div className="gradient-bg p-1.5 rounded-lg">
-                <Tv className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-lg font-bold text-gray-900">digiguide.tv</span>
-            </div>
-
-            {/* Platform and Date Controls */}
-            <div className="flex items-center space-x-6">
-              {/* Platform Selector */}
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-600">Platform:</span>
+    <div className="min-h-screen bg-gray-50">
+      <MinimalistNavigation currentPage="guide" />
+      
+      {/* Controls Section */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-12 py-12">
+          <div className="space-y-12">
+            
+            {/* Platform and Search */}
+            <div className="flex items-center justify-between">
+              <div className="space-y-3">
+                <p className="text-sm font-light text-gray-600">Platform</p>
                 <select
                   value={selectedPlatform}
                   onChange={(e) => setSelectedPlatform(e.target.value)}
-                  className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-6 py-3 bg-white border border-gray-200 rounded-3xl 
+                           font-light text-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-200
+                           transition-all duration-300"
                 >
                   {platforms.map(platform => (
                     <option key={platform.id} value={platform.id}>
@@ -99,115 +87,102 @@ export default function GuidePage() {
                   ))}
                 </select>
               </div>
-
-              {/* Current Time */}
-              <div className="text-sm text-gray-600">
-                {currentTime.toLocaleTimeString('en-GB', { 
-                  hour: '2-digit', 
-                  minute: '2-digit' 
-                })}
+              
+              <div className="space-y-3">
+                <p className="text-sm font-light text-gray-600">Search programmes</p>
+                <div className="relative">
+                  <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Find your programme..."
+                    className="pl-16 pr-8 py-3 bg-white border border-gray-200 rounded-3xl 
+                             font-light text-gray-900 placeholder-gray-500 w-96
+                             focus:outline-none focus:ring-4 focus:ring-gray-200
+                             transition-all duration-300"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Search and Actions */}
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search programmes..."
-                  className="pl-9 pr-4 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
+            {/* Date Navigation */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-light text-gray-600">Programme date</p>
+                <div className="text-sm font-light text-gray-500">
+                  {currentTime.toLocaleTimeString('en-GB', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                  })}
+                </div>
               </div>
               
-              <div className="flex items-center space-x-1">
-                <Button
-                  variant={viewMode === 'grid' ? 'primary' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('grid')}
+              <div className="flex items-center space-x-8">
+                <button
+                  onClick={() => {
+                    const prevDate = new Date(selectedDate)
+                    prevDate.setDate(prevDate.getDate() - 1)
+                    if (prevDate >= new Date()) {
+                      setSelectedDate(prevDate)
+                    }
+                  }}
+                  className="p-3 rounded-3xl hover:bg-gray-100 transition-all duration-300
+                           disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={selectedDate <= new Date()}
                 >
-                  <Grid className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant={viewMode === 'channel' ? 'primary' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('channel')}
+                  <ChevronLeft className="w-6 h-6 text-gray-600" />
+                </button>
+                
+                <div className="flex items-center space-x-4 overflow-x-auto">
+                  {getDates().slice(0, 7).map((date, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedDate(date)}
+                      className={`px-8 py-4 rounded-3xl font-light transition-all duration-300 whitespace-nowrap ${
+                        date.toDateString() === selectedDate.toDateString()
+                          ? 'bg-gray-900 text-white shadow-lg'
+                          : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                    >
+                      {formatDateHeader(date)}
+                    </button>
+                  ))}
+                </div>
+                
+                <button
+                  onClick={() => {
+                    const nextDate = new Date(selectedDate)
+                    nextDate.setDate(nextDate.getDate() + 1)
+                    const maxDate = new Date()
+                    maxDate.setDate(maxDate.getDate() + 13)
+                    if (nextDate <= maxDate) {
+                      setSelectedDate(nextDate)
+                    }
+                  }}
+                  className="p-3 rounded-3xl hover:bg-gray-100 transition-all duration-300"
                 >
-                  <List className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Date Navigation */}
-      <div className="bg-gray-50 border-b border-gray-200 sticky top-14 z-40">
-        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-12">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => {
-                  const prevDate = new Date(selectedDate)
-                  prevDate.setDate(prevDate.getDate() - 1)
-                  if (prevDate >= new Date()) {
-                    setSelectedDate(prevDate)
-                  }
-                }}
-                className="p-1 rounded hover:bg-gray-200 transition-colors"
-                disabled={selectedDate <= new Date()}
-              >
-                <ChevronLeft className="w-5 h-5 text-gray-600" />
-              </button>
-              
-              <div className="flex items-center space-x-1 overflow-x-auto">
-                {getDates().slice(0, 7).map((date, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedDate(date)}
-                    className={`px-3 py-1 text-sm font-medium rounded transition-colors whitespace-nowrap ${
-                      date.toDateString() === selectedDate.toDateString()
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    {formatDateHeader(date)}
-                  </button>
-                ))}
+                  <ChevronRight className="w-6 h-6 text-gray-600" />
+                </button>
               </div>
               
-              <button
-                onClick={() => {
-                  const nextDate = new Date(selectedDate)
-                  nextDate.setDate(nextDate.getDate() + 1)
-                  const maxDate = new Date()
-                  maxDate.setDate(maxDate.getDate() + 13)
-                  if (nextDate <= maxDate) {
-                    setSelectedDate(nextDate)
-                  }
-                }}
-                className="p-1 rounded hover:bg-gray-200 transition-colors"
-              >
-                <ChevronRight className="w-5 h-5 text-gray-600" />
-              </button>
-            </div>
-            
-            <div className="text-sm text-gray-600">
-              {selectedDate.toLocaleDateString('en-GB', { 
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-              })}
+              <div className="text-center">
+                <p className="text-lg font-light text-gray-800">
+                  {selectedDate.toLocaleDateString('en-GB', { 
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <main className="max-w-full mx-auto">
+      {/* TV Guide Content */}
+      <main className="max-w-7xl mx-auto px-12 py-16">
         <ElegantTVGuide
           platform={selectedPlatform}
           date={selectedDate}

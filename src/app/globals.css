@@ -4,44 +4,87 @@
 
 @layer base {
   html {
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
   }
   
   body {
-    background-color: #f8fafc;
-    color: #0f172a;
+    background-color: #fafafa;
+    color: #2d2d2d;
+  }
+  
+  * {
+    transition: all 0.2s ease-in-out;
   }
 }
 
 @layer components {
   .btn-primary {
-    background-color: #2563eb;
+    background-color: #2d2d2d;
     color: white;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    transition: background-color 0.2s ease-in-out;
+    font-weight: 400;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    letter-spacing: 0.025em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
   }
   
   .btn-primary:hover {
-    background-color: #1d4ed8;
+    background-color: #1a1a1a;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background-color: transparent;
+    color: #2d2d2d;
+    font-weight: 400;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    letter-spacing: 0.025em;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .btn-secondary:hover {
+    border-color: #2d2d2d;
+    transform: translateY(-1px);
   }
   
   .card {
     background-color: white;
-    border-radius: 0.75rem;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    border: 1px solid #e5e7eb;
-    transition: box-shadow 0.2s ease-in-out;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0f0f0;
+    transition: all 0.2s ease-in-out;
   }
   
   .card:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
   }
   
-  .gradient-bg {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+  .contemplative-text {
+    color: #666;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+  
+  .minimal-section {
+    padding: 6rem 0;
+  }
+  
+  .focus-area {
+    max-width: 42rem;
+    margin: 0 auto;
   }
 }

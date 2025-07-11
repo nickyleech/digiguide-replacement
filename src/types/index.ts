@@ -42,8 +42,9 @@ export interface ChannelPlatform {
 export interface User {
   id: string
   email: string
-  subscriptionTier: 'free' | 'premium'
+  subscriptionTier: 'free' | 'premium' | 'corporate'
   platformPreference: string
+  corporateAccountId?: string
   createdAt: string
   updatedAt: string
 }
@@ -56,4 +57,126 @@ export interface UserPreferences {
     push: boolean
     advanceTime: number
   }
+}
+
+export interface AdminUser {
+  id: string
+  email: string
+  role: 'super_admin' | 'admin' | 'moderator'
+  permissions: Permission[]
+  createdAt: string
+  lastLoginAt: string
+  isActive: boolean
+}
+
+export interface CorporateAccount {
+  id: string
+  companyName: string
+  accountType: 'corporate'
+  maxUsers: number
+  currentUsers: number
+  adminUserId: string
+  billingContact: string
+  subscriptionTier: 'corporate_basic' | 'corporate_premium' | 'enterprise'
+  features: string[]
+  status: 'active' | 'suspended' | 'cancelled'
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CorporateUser {
+  id: string
+  email: string
+  corporateAccountId: string
+  role: 'corp_admin' | 'corp_user' | 'corp_manager'
+  permissions: string[]
+  isActive: boolean
+  createdAt: string
+  lastLoginAt: string
+}
+
+export interface Permission {
+  id: string
+  name: string
+  description: string
+  category: 'users' | 'channels' | 'platforms' | 'billing' | 'system' | 'corporate'
+}
+
+export interface Subscription {
+  id: string
+  userId: string
+  corporateAccountId?: string
+  planType: 'free' | 'premium' | 'corporate_basic' | 'corporate_premium' | 'enterprise'
+  status: 'active' | 'cancelled' | 'expired' | 'suspended'
+  startDate: string
+  endDate: string
+  billingCycle: 'monthly' | 'yearly'
+  amount: number
+  currency: string
+  paymentMethod: string
+  autoRenew: boolean
+}
+
+export interface Payment {
+  id: string
+  subscriptionId: string
+  userId: string
+  amount: number
+  currency: string
+  status: 'pending' | 'completed' | 'failed' | 'refunded'
+  paymentDate: string
+  paymentMethod: string
+  transactionId: string
+  refundAmount?: number
+  refundDate?: string
+}
+
+export interface AdminAuditLog {
+  id: string
+  adminUserId: string
+  action: string
+  targetType: 'user' | 'channel' | 'platform' | 'subscription' | 'payment'
+  targetId: string
+  changes: Record<string, any>
+  timestamp: string
+  ipAddress: string
+}
+
+export interface ChannelApiMapping {
+  id: string
+  channelId: string
+  externalApiId: string
+  apiProvider: string
+  mappingType: 'epg' | 'logos' | 'metadata'
+  isActive: boolean
+  lastSyncDate: string
+}
+
+export interface OfferCode {
+  id: string
+  code: string
+  name: string
+  description: string
+  discountType: 'percentage' | 'fixed'
+  discountValue: number
+  minAmount?: number
+  maxDiscount?: number
+  validFrom: string
+  validUntil: string
+  isActive: boolean
+  usageLimit?: number
+  usedCount: number
+  applicablePlans: ('basic' | 'premium')[]
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+}
+
+export interface OfferCodeUsage {
+  id: string
+  offerCodeId: string
+  userId: string
+  subscriptionId: string
+  discountAmount: number
+  usedAt: string
 }
