@@ -16,6 +16,7 @@ export default function HomePage() {
   }
 
   return (
+    <>
     <div className="min-h-screen bg-primary-50">
       <Navigation />
       
@@ -138,11 +139,35 @@ export default function HomePage() {
         </div>
       </footer>
 
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        initialMode={authMode}
-      />
+      {/* Debug info */}
+      {showAuthModal && (
+        <div className="fixed top-4 right-4 bg-red-500 text-white p-2 rounded z-[10000]">
+          Modal should be open: {showAuthModal.toString()}
+        </div>
+      )}
     </div>
+    
+    {/* Test modal */}
+    {showAuthModal && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
+          <h2 className="text-2xl font-bold mb-4">Test Modal</h2>
+          <p className="mb-4">This is a test modal to verify the modal functionality is working.</p>
+          <button
+            onClick={() => setShowAuthModal(false)}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
+    
+    <AuthModal
+      isOpen={showAuthModal}
+      onClose={() => setShowAuthModal(false)}
+      initialMode={authMode}
+    />
+    </>
   )
 }

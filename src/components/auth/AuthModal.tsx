@@ -19,11 +19,11 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
     setMode(initialMode)
   }, [initialMode])
 
-  if (!isOpen) return null
-
   const handleSuccess = () => {
     onClose()
   }
+  
+  if (!isOpen) return null
 
   const toggleMode = () => {
     setMode(mode === 'login' ? 'register' : 'login')
