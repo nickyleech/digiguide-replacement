@@ -32,6 +32,11 @@ class SearchService {
   // Load data from localStorage
   private loadFromStorage(): void {
     try {
+      // Check if localStorage is available (client-side only)
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return;
+      }
+
       const savedSearches = localStorage.getItem(this.SAVED_SEARCHES_KEY);
       if (savedSearches) {
         this.savedSearches = JSON.parse(savedSearches).map((search: any) => ({
@@ -69,6 +74,11 @@ class SearchService {
   // Save data to localStorage
   private saveToStorage(): void {
     try {
+      // Check if localStorage is available (client-side only)
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return;
+      }
+
       localStorage.setItem(this.SAVED_SEARCHES_KEY, JSON.stringify(this.savedSearches));
       localStorage.setItem(this.SEARCH_HISTORY_KEY, JSON.stringify(this.searchHistory));
       localStorage.setItem(this.SEARCH_SUGGESTIONS_KEY, JSON.stringify(this.searchSuggestions));
@@ -117,7 +127,7 @@ class SearchService {
       });
       
       // Add fuzzy results that aren't already included
-      fuzzyResults.forEach(fuzzyResult => {
+      fuzzyResults.forEach((fuzzyResult: any) => {
         if (!filteredProgrammes.some(p => p.id === fuzzyResult.item.id)) {
           filteredProgrammes.push({
             ...fuzzyResult.item,
@@ -143,7 +153,8 @@ class SearchService {
     const facets = this.generateFacets(filteredProgrammes, mergedFilters);
 
     // Generate suggestions (including fuzzy suggestions)
-    const suggestions = this.generateSuggestions(filters.query, terms);
+    const searchSuggestions = this.generateSuggestions(filters.query, terms);
+    const suggestions = searchSuggestions.map(s => s.text);
 
     const endTime = performance.now();
     const searchTime = endTime - startTime;

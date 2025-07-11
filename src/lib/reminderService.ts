@@ -1,5 +1,5 @@
 import { ProgrammeReminder, ReminderPreferences, NotificationMethod, ReminderNotification, DEFAULT_REMINDER_PREFERENCES } from './reminders';
-import { Programme } from './epgService';
+import { Programme } from '@/types';
 
 class ReminderService {
   private reminders: ProgrammeReminder[] = [];
@@ -16,6 +16,11 @@ class ReminderService {
   // Load data from localStorage
   private loadFromStorage(): void {
     try {
+      // Check if localStorage is available (client-side only)
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return;
+      }
+
       const storedReminders = localStorage.getItem(this.REMINDERS_KEY);
       if (storedReminders) {
         this.reminders = JSON.parse(storedReminders).map((reminder: any) => ({
@@ -47,6 +52,11 @@ class ReminderService {
   // Save data to localStorage
   private saveToStorage(): void {
     try {
+      // Check if localStorage is available (client-side only)
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return;
+      }
+
       localStorage.setItem(this.REMINDERS_KEY, JSON.stringify(this.reminders));
       
       const prefsObj = Object.fromEntries(this.preferences.entries());
