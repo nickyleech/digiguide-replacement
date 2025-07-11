@@ -23,6 +23,7 @@ import AdminHeader from '@/components/admin/AdminHeader'
 import ChannelDetailsModal from '@/components/admin/ChannelDetailsModal'
 import EditChannelModal from '@/components/admin/EditChannelModal'
 import AddChannelModal from '@/components/admin/AddChannelModal'
+import ProtectedAdminRoute from '@/components/ProtectedAdminRoute'
 
 interface Channel {
   id: string
@@ -232,7 +233,8 @@ export default function ChannelsManagement() {
   ).length
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <ProtectedAdminRoute>
+      <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar currentPage="channels" />
       
       <div className="flex-1 flex flex-col">
@@ -551,5 +553,6 @@ export default function ChannelsManagement() {
         />
       )}
     </div>
+    </ProtectedAdminRoute>
   )
 }

@@ -19,6 +19,7 @@ import {
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import AdminHeader from '@/components/admin/AdminHeader'
 import CreateOfferCodeModal from '@/components/admin/CreateOfferCodeModal'
+import ProtectedAdminRoute from '@/components/ProtectedAdminRoute'
 import { OfferCode } from '@/types'
 
 export default function OfferCodesManagement() {
@@ -160,7 +161,8 @@ export default function OfferCodesManagement() {
   const expiredOffers = offerCodes.filter(code => new Date(code.validUntil) < new Date()).length
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <ProtectedAdminRoute>
+      <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar currentPage="offer-codes" />
       
       <div className="flex-1 flex flex-col">
@@ -436,5 +438,6 @@ export default function OfferCodesManagement() {
         onSave={createOfferCode}
       />
     </div>
+    </ProtectedAdminRoute>
   )
 }

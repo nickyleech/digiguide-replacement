@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
-import { Menu, X, Home, Search, User, Settings, Heart, Bell, HelpCircle } from 'lucide-react'
+import { Menu, X, Home, Search, User, Settings, Heart, Bell, HelpCircle, Shield } from 'lucide-react'
 
 export default function Navigation() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isAdmin } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navItems = [
@@ -17,6 +17,9 @@ export default function Navigation() {
       { href: '/watchlist', label: 'Watchlist', icon: Heart },
       { href: '/reminders', label: 'Reminders', icon: Bell },
       { href: '/preferences', label: 'Preferences', icon: Settings },
+    ] : []),
+    ...(isAuthenticated && isAdmin() ? [
+      { href: '/admin', label: 'Admin', icon: Shield },
     ] : []),
     { href: '/help', label: 'Help', icon: HelpCircle },
   ]

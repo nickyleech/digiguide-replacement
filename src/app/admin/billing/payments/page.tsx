@@ -19,6 +19,7 @@ import AdminSidebar from '@/components/admin/AdminSidebar'
 import AdminHeader from '@/components/admin/AdminHeader'
 import PaymentDetailsModal from '@/components/admin/PaymentDetailsModal'
 import RefundModal from '@/components/admin/RefundModal'
+import ProtectedAdminRoute from '@/components/ProtectedAdminRoute'
 
 interface Payment {
   id: string
@@ -187,7 +188,8 @@ export default function PaymentsManagement() {
   const pendingPayments = payments.filter(p => p.status === 'pending').length
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <ProtectedAdminRoute>
+      <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar currentPage="payments" />
       
       <div className="flex-1 flex flex-col">
@@ -450,5 +452,6 @@ export default function PaymentsManagement() {
         />
       )}
     </div>
+    </ProtectedAdminRoute>
   )
 }

@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import { CorporateUser, CorporateAccount } from '@/types'
+import ProtectedAdminRoute from '@/components/ProtectedAdminRoute'
 
 const mockCorporateAccounts: CorporateAccount[] = [
   {
@@ -188,7 +189,8 @@ export default function CorporateUsersPage() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <ProtectedAdminRoute>
+      <div className="flex h-screen bg-gray-50">
       <AdminSidebar currentPage="corporate-users" />
       
       <div className="flex-1 overflow-hidden">
@@ -453,5 +455,6 @@ export default function CorporateUsersPage() {
         </div>
       </div>
     </div>
+    </ProtectedAdminRoute>
   )
 }

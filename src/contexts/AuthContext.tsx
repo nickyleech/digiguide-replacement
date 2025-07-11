@@ -11,6 +11,9 @@ interface AuthContextType extends AuthState {
   updateProfile: (updates: Partial<User>) => Promise<AuthResponse>
   deleteAccount: () => Promise<AuthResponse>
   refreshToken: () => Promise<AuthResponse>
+  isAdmin: () => boolean
+  isSuperAdmin: () => boolean
+  hasRole: (role: 'user' | 'admin' | 'super_admin') => boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -101,6 +104,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return await authService.refreshToken()
   }
 
+  const isAdmin = (): boolean => {
+    return authService.isAdmin()
+  }
+
+  const isSuperAdmin = (): boolean => {
+    return authService.isSuperAdmin()
+  }
+
+  const hasRole = (role: 'user' | 'admin' | 'super_admin'): boolean => {
+    return authService.hasRole(role)
+  }
+
   const value = {
     user,
     isAuthenticated,
@@ -110,7 +125,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logout,
     updateProfile,
     deleteAccount,
-    refreshToken
+    refreshToken,
+    isAdmin,
+    isSuperAdmin,
+    hasRole
   }
 
   return (

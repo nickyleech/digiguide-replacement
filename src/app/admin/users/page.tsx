@@ -21,6 +21,7 @@ import AdminSidebar from '@/components/admin/AdminSidebar'
 import AdminHeader from '@/components/admin/AdminHeader'
 import UserDetailsModal from '@/components/admin/UserDetailsModal'
 import EditUserModal from '@/components/admin/EditUserModal'
+import ProtectedAdminRoute from '@/components/ProtectedAdminRoute'
 
 interface User {
   id: string
@@ -146,7 +147,8 @@ export default function UsersManagement() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <ProtectedAdminRoute>
+      <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar currentPage="users" />
       
       <div className="flex-1 flex flex-col">
@@ -404,5 +406,6 @@ export default function UsersManagement() {
         />
       )}
     </div>
+    </ProtectedAdminRoute>
   )
 }

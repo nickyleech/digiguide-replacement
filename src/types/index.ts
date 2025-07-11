@@ -46,6 +46,7 @@ export interface User {
   subscriptionTier: 'free' | 'premium' | 'corporate'
   platformPreference: string
   corporateAccountId?: string
+  role: 'user' | 'admin' | 'super_admin'
   createdAt: string
   updatedAt: string
 }

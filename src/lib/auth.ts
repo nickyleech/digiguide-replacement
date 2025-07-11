@@ -76,13 +76,35 @@ export class AuthService {
         return { success: false, error: 'Email and password are required' }
       }
 
+      // Check for super admin login
+      if (credentials.email === 'admin@digiguide.tv' && credentials.password === 'admin123') {
+        const user: User = {
+          id: 'super-admin-1',
+          email: credentials.email,
+          subscriptionTier: 'premium',
+          platformPreference: 'freeview',
+          role: 'super_admin',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+
+        const token = 'mock-jwt-token-admin-' + Date.now()
+        
+        this.currentUser = user
+        this.token = token
+        this.saveToStorage()
+
+        return { success: true, user, token }
+      }
+      
+      // Check for regular demo user login
       if (credentials.email === 'demo@digiguide.tv' && credentials.password === 'demo123') {
-        // Mock successful login
         const user: User = {
           id: 'demo-user-1',
           email: credentials.email,
           subscriptionTier: 'premium',
           platformPreference: 'freeview',
+          role: 'user',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         }
@@ -126,6 +148,7 @@ export class AuthService {
         email: credentials.email,
         subscriptionTier: 'free',
         platformPreference: 'freeview',
+        role: 'user',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       }
@@ -158,6 +181,29 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return this.currentUser !== null && this.token !== null
+  }
+
+  isAdmin(): boolean {
+    return this.currentUser?.role === 'admin' || this.currentUser?.role === 'super_admin'
+  }
+
+  isSuperAdmin(): boolean {
+    return this.currentUser?.role === 'super_admin'
+  }
+
+  hasRole(role: 'user' | 'admin' | 'super_admin'): boolean {
+    if (!this.currentUser) return false
+    
+    switch (role) {
+      case 'user':
+        return true // All authenticated users are users
+      case 'admin':
+        return this.currentUser.role === 'admin' || this.currentUser.role === 'super_admin'
+      case 'super_admin':
+        return this.currentUser.role === 'super_admin'
+      default:
+        return false
+    }
   }
 
   async refreshToken(): Promise<AuthResponse> {

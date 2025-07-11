@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import AdminHeader from '@/components/admin/AdminHeader'
+import ProtectedAdminRoute from '@/components/ProtectedAdminRoute'
 
 export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -106,7 +107,8 @@ export default function AdminDashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <ProtectedAdminRoute>
+      <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar currentPage="dashboard" />
       
       <div className="flex-1 flex flex-col">
@@ -251,5 +253,6 @@ export default function AdminDashboard() {
         </main>
       </div>
     </div>
+    </ProtectedAdminRoute>
   )
 }

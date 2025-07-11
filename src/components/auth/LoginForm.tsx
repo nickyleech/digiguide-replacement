@@ -141,12 +141,20 @@ export default function LoginForm({ onToggleMode, onSuccess }: LoginFormProps) {
 
       <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
         <p className="text-sm text-blue-700 mb-2">
-          <strong>Demo Account:</strong>
+          <strong>Demo Accounts:</strong>
         </p>
-        <p className="text-sm text-blue-600">
-          Email: demo@digiguide.tv<br />
-          Password: demo123
-        </p>
+        <div className="text-sm text-blue-600 space-y-2">
+          <div>
+            <strong>Regular User:</strong><br />
+            Email: demo@digiguide.tv<br />
+            Password: demo123
+          </div>
+          <div>
+            <strong>Admin User:</strong><br />
+            Email: admin@digiguide.tv<br />
+            Password: admin123
+          </div>
+        </div>
       </div>
     </div>
   )
