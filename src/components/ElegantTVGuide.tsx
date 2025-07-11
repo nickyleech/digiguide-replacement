@@ -7,6 +7,7 @@ import { epgService } from '@/lib/epgService'
 import ChannelLogo from './ChannelLogo'
 import WatchlistButton from './WatchlistButton'
 import FavoriteChannelButton from './FavoriteChannelButton'
+import ReminderButton from './ReminderButton'
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -202,6 +203,7 @@ export function ElegantTVGuide({
           startTime: startTime.toISOString(),
           endTime: endTime.toISOString(),
           channelId: channel.id,
+          channel: channel.name,
           duration: template.duration,
           rating: Math.random() > 0.7 ? ['U', 'PG', '12', '15'][Math.floor(Math.random() * 4)] : undefined
         })
@@ -367,6 +369,10 @@ export function ElegantTVGuide({
                     <p className="text-sm text-gray-600 mt-1">{prog.description}</p>
                   </div>
                   <div className="flex items-center space-x-3">
+                    <ReminderButton
+                      programme={prog}
+                      className="h-8 w-8"
+                    />
                     <WatchlistButton
                       programme={prog}
                       channelName={channel.name}
@@ -460,7 +466,11 @@ export function ElegantTVGuide({
                               onChannelSelect(channel.id)
                             }}
                           >
-                            <div className="absolute top-1 right-1">
+                            <div className="absolute top-1 right-1 flex items-center space-x-1">
+                              <ReminderButton
+                                programme={prog}
+                                className="h-6 w-6"
+                              />
                               <WatchlistButton
                                 programme={prog}
                                 channelName={channel.name}

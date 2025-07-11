@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Tv, HelpCircle, User, LogOut, Bookmark } from 'lucide-react'
+import { Tv, HelpCircle, User, LogOut, Bookmark, Bell } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import AuthModal from './auth/AuthModal'
 
@@ -80,6 +80,17 @@ export default function MinimalistNavigation({ currentPage = 'guide' }: Minimali
                   >
                     <Bookmark className="w-5 h-5" />
                     <span className="font-light">Watchlist</span>
+                  </button>
+                  <button
+                    onClick={() => handleNavigation('/reminders')}
+                    className={`flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 ${
+                      currentPage === 'reminders' 
+                        ? 'bg-gray-100 text-gray-900' 
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    }`}
+                  >
+                    <Bell className="w-5 h-5" />
+                    <span className="font-light">Reminders</span>
                   </button>
                   <button
                     onClick={() => handleNavigation('/user')}

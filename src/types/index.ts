@@ -6,6 +6,7 @@ export interface Programme {
   startTime: string
   endTime: string
   channelId: string
+  channel: string
   episodeTitle?: string
   seasonNumber?: number
   episodeNumber?: number
