@@ -1,8 +1,12 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Programme, Channel } from '@/types'
 import { formatTime } from '@/lib/utils'
+import { epgService } from '@/lib/epgService'
+import ChannelLogo from './ChannelLogo'
+import WatchlistButton from './WatchlistButton'
+import FavoriteChannelButton from './FavoriteChannelButton'
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -31,8 +35,39 @@ export function ElegantTVGuide({
   searchQuery 
 }: ElegantTVGuideProps) {
   const [currentChannelIndex, setCurrentChannelIndex] = useState(0)
+  const [channels, setChannels] = useState<Channel[]>([])
+  const [programmes, setProgrammes] = useState<Programme[]>([])
+  const [loading, setLoading] = useState(true)
 
-  // Mock data matching the elegant design
+  // Load real data from EPG service
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true)
+      try {
+        const channelData = await epgService.getChannels(platform)
+        setChannels(channelData)
+
+        // Load programmes for all channels
+        const allProgrammes: Programme[] = []
+        for (const channel of channelData) {
+          const channelProgrammes = await epgService.getProgrammes(channel.id, date)
+          allProgrammes.push(...channelProgrammes)
+        }
+        setProgrammes(allProgrammes)
+      } catch (error) {
+        console.error('Error loading EPG data:', error)
+        // Fallback to mock data
+        setChannels(mockChannels)
+        setProgrammes(generateMockProgrammes())
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadData()
+  }, [platform, date])
+
+  // Fallback mock data for when service fails
   const mockChannels: Channel[] = [
     {
       id: 'bbc-one',
@@ -182,21 +217,9 @@ export function ElegantTVGuide({
   const mockProgrammes = useMemo(() => generateMockProgrammes(), [date])
 
   const getEPGNumber = (channelId: string) => {
-    const channel = mockChannels.find(c => c.id === channelId)
+    const channel = channels.find(c => c.id === channelId)
     const platformData = channel?.platforms.find(p => p.platformId === platform)
     return platformData?.epgNumber || 0
-  }
-
-  const getChannelLogo = (channelId: string) => {
-    const logos: { [key: string]: string } = {
-      'bbc-one': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-      'bbc-two': '2️⃣',
-      'itv1': '📺',
-      'channel-4': '4️⃣',
-      'channel-5': '5️⃣',
-      'itv2': '📱'
-    }
-    return logos[channelId] || '📺'
   }
 
   const isLive = (programme: Programme) => {
@@ -207,12 +230,12 @@ export function ElegantTVGuide({
   }
 
   const getCurrentProgramme = (channelId: string) => {
-    return mockProgrammes.find(p => p.channelId === channelId && isLive(p))
+    return programmes.find(p => p.channelId === channelId && isLive(p))
   }
 
   const getUpcomingProgrammes = (channelId: string, limit = 5) => {
     const now = currentTime
-    return mockProgrammes
+    return programmes
       .filter(p => p.channelId === channelId && new Date(p.startTime) > now)
       .slice(0, limit)
   }
@@ -223,15 +246,26 @@ export function ElegantTVGuide({
     const endTime = new Date(date)
     endTime.setHours(endHour, 0, 0, 0)
 
-    return mockProgrammes.filter(p => {
+    return programmes.filter(p => {
       const progStart = new Date(p.startTime)
       return progStart >= startTime && progStart < endTime
     })
   }
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading TV guide...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (viewMode === 'channel') {
     // Single channel detailed view (like image 3)
-    const channel = mockChannels.find(c => c.id === selectedChannel) || mockChannels[0]
+    const channel = channels.find(c => c.id === selectedChannel) || channels[0]
     const currentProg = getCurrentProgramme(channel.id)
     const upcomingProgs = getUpcomingProgrammes(channel.id)
 
@@ -242,9 +276,9 @@ export function ElegantTVGuide({
           <div className="max-w-6xl mx-auto px-4 flex items-center justify-center space-x-8">
             <button
               onClick={() => {
-                const prevIndex = currentChannelIndex > 0 ? currentChannelIndex - 1 : mockChannels.length - 1
+                const prevIndex = currentChannelIndex > 0 ? currentChannelIndex - 1 : channels.length - 1
                 setCurrentChannelIndex(prevIndex)
-                onChannelSelect(mockChannels[prevIndex].id)
+                onChannelSelect(channels[prevIndex].id)
               }}
               className="text-gray-400 hover:text-gray-600"
             >
@@ -253,13 +287,24 @@ export function ElegantTVGuide({
 
             <div className="flex items-center space-x-12">
               {[-1, 0, 1].map(offset => {
-                const index = (currentChannelIndex + offset + mockChannels.length) % mockChannels.length
-                const ch = mockChannels[index]
+                const index = (currentChannelIndex + offset + channels.length) % channels.length
+                const ch = channels[index]
                 const isActive = offset === 0
 
                 return (
                   <div key={ch.id} className={`text-center ${isActive ? 'scale-110' : 'opacity-50'}`}>
-                    <div className="text-2xl mb-1">{getChannelLogo(ch.id)}</div>
+                    <div className="mb-1 relative">
+                      <ChannelLogo channelId={ch.id} size="lg" />
+                      {isActive && (
+                        <div className="absolute -top-2 -right-2">
+                          <FavoriteChannelButton
+                            channelId={ch.id}
+                            channelName={ch.name}
+                            size="sm"
+                          />
+                        </div>
+                      )}
+                    </div>
                     <div className={`font-bold text-sm ${isActive ? 'text-gray-900' : 'text-gray-500'}`}>
                       {getEPGNumber(ch.id)}: {ch.name}
                     </div>
@@ -270,9 +315,9 @@ export function ElegantTVGuide({
 
             <button
               onClick={() => {
-                const nextIndex = (currentChannelIndex + 1) % mockChannels.length
+                const nextIndex = (currentChannelIndex + 1) % channels.length
                 setCurrentChannelIndex(nextIndex)
-                onChannelSelect(mockChannels[nextIndex].id)
+                onChannelSelect(channels[nextIndex].id)
               }}
               className="text-gray-400 hover:text-gray-600"
             >
@@ -321,12 +366,20 @@ export function ElegantTVGuide({
                     <h3 className="font-semibold text-gray-900">{prog.title}</h3>
                     <p className="text-sm text-gray-600 mt-1">{prog.description}</p>
                   </div>
-                  <div className="text-right ml-4">
-                    <div className="text-sm font-medium text-gray-900">
-                      {formatTime(prog.startTime)}
-                    </div>
-                    <div className="text-xs text-gray-500 uppercase">
-                      {prog.genre}
+                  <div className="flex items-center space-x-3">
+                    <WatchlistButton
+                      programme={prog}
+                      channelName={channel.name}
+                      size="sm"
+                      variant="icon"
+                    />
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-gray-900">
+                        {formatTime(prog.startTime)}
+                      </div>
+                      <div className="text-xs text-gray-500 uppercase">
+                        {prog.genre}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -355,9 +408,11 @@ export function ElegantTVGuide({
         <div className="flex">
           <div className="w-32 flex-shrink-0"></div>
           <div className="grid grid-cols-6 flex-1">
-            {mockChannels.slice(0, 6).map(channel => (
+            {channels.slice(0, 6).map(channel => (
               <div key={channel.id} className="text-center py-3 border-r border-gray-200 last:border-r-0">
-                <div className="text-lg mb-1">{getChannelLogo(channel.id)}</div>
+                <div className="mb-1 flex justify-center">
+                  <ChannelLogo channelId={channel.id} size="md" />
+                </div>
                 <div className="text-xs font-bold text-gray-900">{getEPGNumber(channel.id)}: {channel.name}</div>
               </div>
             ))}
@@ -384,7 +439,7 @@ export function ElegantTVGuide({
 
               {/* Programmes for each channel */}
               <div className="grid grid-cols-6 flex-1">
-                {mockChannels.slice(0, 6).map(channel => {
+                {channels.slice(0, 6).map(channel => {
                   const channelProgs = slotProgrammes.filter(p => p.channelId === channel.id)
                   const currentProg = getCurrentProgramme(channel.id)
                   
@@ -396,7 +451,7 @@ export function ElegantTVGuide({
                         return (
                           <div
                             key={prog.id}
-                            className={`p-2 rounded mb-2 cursor-pointer transition-all hover:shadow-md ${
+                            className={`p-2 rounded mb-2 cursor-pointer transition-all hover:shadow-md relative ${
                               live 
                                 ? 'bg-red-50 border border-red-200' 
                                 : 'bg-gray-50 hover:bg-gray-100'
@@ -405,13 +460,21 @@ export function ElegantTVGuide({
                               onChannelSelect(channel.id)
                             }}
                           >
+                            <div className="absolute top-1 right-1">
+                              <WatchlistButton
+                                programme={prog}
+                                channelName={channel.name}
+                                size="sm"
+                                variant="icon"
+                              />
+                            </div>
                             {live && (
                               <div className="flex items-center space-x-1 text-red-600 text-xs font-medium mb-1">
                                 <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
                                 <span>ON NOW</span>
                               </div>
                             )}
-                            <h4 className="font-medium text-sm text-gray-900 leading-tight mb-1">
+                            <h4 className="font-medium text-sm text-gray-900 leading-tight mb-1 pr-8">
                               {prog.title}
                             </h4>
                             <div className="text-xs text-gray-600">

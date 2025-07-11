@@ -1,13 +1,24 @@
 'use client'
 
+import { useState } from 'react'
 import { 
   Tv, 
   Clock,
   ArrowRight,
   Pause
 } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
+import AuthModal from '@/components/auth/AuthModal'
 
 export default function HomePage() {
+  const { isAuthenticated } = useAuth()
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
+
+  const handleAuthClick = (mode: 'login' | 'register') => {
+    setAuthMode(mode)
+    setShowAuthModal(true)
+  }
   const principles = [
     {
       title: 'Thoughtful viewing',
@@ -35,7 +46,21 @@ export default function HomePage() {
             <span className="text-lg font-light text-primary-800 tracking-wide">digiguide</span>
           </div>
           <div className="flex items-center space-x-6">
-            <button className="text-primary-600 hover:text-primary-800 font-light text-sm tracking-wide">Sign in</button>
+            {isAuthenticated ? (
+              <button 
+                onClick={() => window.location.href = '/user'}
+                className="text-primary-600 hover:text-primary-800 font-light text-sm tracking-wide"
+              >
+                Profile
+              </button>
+            ) : (
+              <button 
+                onClick={() => handleAuthClick('login')}
+                className="text-primary-600 hover:text-primary-800 font-light text-sm tracking-wide"
+              >
+                Sign in
+              </button>
+            )}
             <button 
               onClick={() => window.location.href = '/guide'}
               className="btn-primary text-sm"
@@ -198,6 +223,12 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode={authMode}
+      />
     </div>
   )
 }
