@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import AuthModal from '@/components/auth/AuthModal'
 import Navigation from '@/components/Navigation'
@@ -10,6 +10,7 @@ export default function HomePage() {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   const [mounted, setMounted] = useState(false)
+  const [debugCounter, setDebugCounter] = useState(0)
   
   // Ensure component is mounted on client side
   useEffect(() => {
@@ -38,10 +39,19 @@ export default function HomePage() {
     alert(`Button clicked: ${mode}`)
     console.log('Before state update:', showAuthModal)
     setAuthMode(mode)
+    setDebugCounter(prev => prev + 1) // Force re-render
+    
+    // Try multiple approaches to ensure state updates
+    setTimeout(() => {
+      setShowAuthModal(true)
+      console.log('setTimeout setShowAuthModal called')
+    }, 0)
+    
     setShowAuthModal(prev => {
-      console.log('State update:', prev, '->', true)
+      console.log('State update callback:', prev, '->', true)
       return true
     })
+    
     console.log('After state update call')
   }
 
@@ -78,6 +88,9 @@ export default function HomePage() {
                 </p>
                 <p className="text-sm text-gray-500">
                   Auth state: {isAuthenticated ? 'AUTHENTICATED' : 'NOT AUTHENTICATED'}
+                </p>
+                <p className="text-sm text-gray-400">
+                  Debug counter: {debugCounter}
                 </p>
               </div>
             </div>
