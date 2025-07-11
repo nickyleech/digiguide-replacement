@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Tv, HelpCircle, User, LogOut, Bookmark, Bell } from 'lucide-react'
+import { Tv, HelpCircle, User, LogOut, Bookmark, Bell, Search } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import AuthModal from './auth/AuthModal'
 
@@ -54,6 +54,18 @@ export default function MinimalistNavigation({ currentPage = 'guide' }: Minimali
               >
                 <Tv className="w-5 h-5" />
                 <span className="font-light">Guide</span>
+              </button>
+              
+              <button
+                onClick={() => handleNavigation('/search')}
+                className={`flex items-center space-x-3 px-6 py-3 rounded-3xl transition-all duration-300 ${
+                  currentPage === 'search' 
+                    ? 'bg-gray-100 text-gray-900' 
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <Search className="w-5 h-5" />
+                <span className="font-light">Search</span>
               </button>
               
               <button
