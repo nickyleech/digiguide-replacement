@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useWatchlist } from '@/hooks/useWatchlist'
-import MinimalistNavigation from '@/components/MinimalistNavigation'
+import Navigation from '@/components/Navigation'
 import WatchlistButton from '@/components/WatchlistButton'
 import AuthModal from '@/components/auth/AuthModal'
 import { formatTime } from '@/lib/utils'
@@ -75,7 +75,7 @@ export default function WatchlistPage() {
     return (
       <>
         <div className="min-h-screen bg-gray-50">
-          <MinimalistNavigation currentPage="watchlist" />
+          <Navigation />
           <div className="max-w-4xl mx-auto px-6 py-16">
             <div className="text-center">
               <Bookmark className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -103,7 +103,7 @@ export default function WatchlistPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MinimalistNavigation currentPage="watchlist" />
+      <Navigation />
       
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}

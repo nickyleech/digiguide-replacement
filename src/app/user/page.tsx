@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import MinimalistNavigation from '@/components/MinimalistNavigation'
+import Navigation from '@/components/Navigation'
 import { User, Settings, Bell, Star, LogOut, Edit3, Shield, Download, Trash2, Crown, Calendar, Mail, CheckCircle } from 'lucide-react'
 
 export default function UserPage() {
@@ -50,7 +50,7 @@ export default function UserPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MinimalistNavigation currentPage="user" />
+      <Navigation />
       
       <div className="max-w-4xl mx-auto px-12 py-32">
         

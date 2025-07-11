@@ -1,6 +1,6 @@
 'use client'
 
-import MinimalistNavigation from '@/components/MinimalistNavigation'
+import Navigation from '@/components/Navigation'
 import { Search, Tv, Calendar, User, HelpCircle } from 'lucide-react'
 
 export default function HelpPage() {
@@ -29,7 +29,7 @@ export default function HelpPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MinimalistNavigation currentPage="help" />
+      <Navigation />
       
       <div className="max-w-4xl mx-auto px-12 py-32">
         

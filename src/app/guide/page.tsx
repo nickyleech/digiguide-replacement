@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ElegantTVGuide } from '@/components/ElegantTVGuide'
-import MinimalistNavigation from '@/components/MinimalistNavigation'
+import Navigation from '@/components/Navigation'
 import { 
   Search,
   ChevronLeft,
@@ -62,7 +62,7 @@ export default function GuidePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MinimalistNavigation currentPage="guide" />
+      <Navigation />
       
       {/* Controls Section */}
       <div className="bg-white border-b border-gray-100">

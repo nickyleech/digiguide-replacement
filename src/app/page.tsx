@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import AuthModal from '@/components/auth/AuthModal'
+import Navigation from '@/components/Navigation'
 
 export default function HomePage() {
   const { isAuthenticated } = useAuth()
@@ -20,37 +21,36 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-primary-50">
-      {/* Navigation */}
-      <nav className="px-6 py-8 bg-primary-50 border-b border-primary-200">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center">
-            <span className="text-lg font-light text-primary-800 tracking-wide">digiguide.tv</span>
+      <Navigation />
+      
+      {/* Sign In Section */}
+      {!isAuthenticated && (
+        <section className="py-8 bg-primary-50 border-b border-primary-200">
+          <div className="max-w-4xl mx-auto px-6">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="text-center space-y-4">
+                <h2 className="text-xl font-light text-primary-800">
+                  Sign in to access your account
+                </h2>
+                <div className="flex justify-center space-x-4">
+                  <button 
+                    onClick={() => handleAuthClick('login')}
+                    className="btn-primary"
+                  >
+                    Sign in
+                  </button>
+                  <button 
+                    onClick={() => handleAuthClick('register')}
+                    className="btn-secondary"
+                  >
+                    Create account
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center space-x-6">
-            {isAuthenticated ? (
-              <button 
-                onClick={() => window.location.href = '/user'}
-                className="text-primary-600 hover:text-primary-800 font-light text-sm tracking-wide"
-              >
-                Profile
-              </button>
-            ) : (
-              <button 
-                onClick={() => handleAuthClick('login')}
-                className="text-primary-600 hover:text-primary-800 font-light text-sm tracking-wide"
-              >
-                Sign in
-              </button>
-            )}
-            <button 
-              onClick={() => window.location.href = '/guide'}
-              className="btn-primary text-sm"
-            >
-              View guide
-            </button>
-          </div>
-        </div>
-      </nav>
+        </section>
+      )}
 
 
       {/* Access Section */}

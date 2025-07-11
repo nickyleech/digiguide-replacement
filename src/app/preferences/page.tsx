@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import MinimalistNavigation from '@/components/MinimalistNavigation'
+import Navigation from '@/components/Navigation'
 import UserPreferences from '@/components/UserPreferences'
 import ChannelManager from '@/components/ChannelManager'
 
@@ -40,7 +40,7 @@ export default function PreferencesPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <MinimalistNavigation currentPage="preferences" />
+      <Navigation />
       
       <div className="max-w-6xl mx-auto px-12 py-32">
         <div className="text-center mb-32">
