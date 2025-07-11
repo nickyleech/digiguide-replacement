@@ -44,35 +44,58 @@ export class AuthService {
 
   private loadFromStorage(): void {
     if (typeof window !== 'undefined') {
-      const storedUser = localStorage.getItem('digiguide_user')
-      const storedToken = localStorage.getItem('digiguide_token')
-      
-      if (storedUser && storedToken) {
-        this.currentUser = JSON.parse(storedUser)
-        this.token = storedToken
+      try {
+        const storedUser = localStorage.getItem('digiguide_user')
+        const storedToken = localStorage.getItem('digiguide_token')
+        
+        if (storedUser && storedToken) {
+          this.currentUser = JSON.parse(storedUser)
+          this.token = storedToken
+          console.log('Auth: Loaded user from storage:', this.currentUser?.email)
+        } else {
+          console.log('Auth: No stored authentication found')
+        }
+      } catch (error) {
+        console.error('Auth: Error loading from storage:', error)
+        this.clearStorage()
       }
     }
   }
 
   private saveToStorage(): void {
     if (typeof window !== 'undefined') {
-      if (this.currentUser && this.token) {
-        localStorage.setItem('digiguide_user', JSON.stringify(this.currentUser))
-        localStorage.setItem('digiguide_token', this.token)
-      } else {
-        localStorage.removeItem('digiguide_user')
-        localStorage.removeItem('digiguide_token')
+      try {
+        if (this.currentUser && this.token) {
+          localStorage.setItem('digiguide_user', JSON.stringify(this.currentUser))
+          localStorage.setItem('digiguide_token', this.token)
+          console.log('Auth: Saved user to storage:', this.currentUser.email)
+        } else {
+          this.clearStorage()
+        }
+      } catch (error) {
+        console.error('Auth: Error saving to storage:', error)
       }
+    }
+  }
+
+  private clearStorage(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('digiguide_user')
+      localStorage.removeItem('digiguide_token')
+      console.log('Auth: Cleared storage')
     }
   }
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
+      console.log('Auth: Attempting login for:', credentials.email)
+      
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000))
 
       // Mock validation
       if (!credentials.email || !credentials.password) {
+        console.log('Auth: Missing email or password')
         return { success: false, error: 'Email and password are required' }
       }
 
@@ -94,6 +117,7 @@ export class AuthService {
         this.token = token
         this.saveToStorage()
 
+        console.log('Auth: Admin login successful')
         return { success: true, user, token }
       }
       
@@ -115,11 +139,14 @@ export class AuthService {
         this.token = token
         this.saveToStorage()
 
+        console.log('Auth: Demo user login successful')
         return { success: true, user, token }
       } else {
+        console.log('Auth: Invalid credentials provided')
         return { success: false, error: 'Invalid email or password' }
       }
     } catch (error) {
+      console.error('Auth: Login error:', error)
       return { success: false, error: 'Login failed. Please try again.' }
     }
   }
@@ -166,6 +193,7 @@ export class AuthService {
   }
 
   async logout(): Promise<void> {
+    console.log('Auth: Logging out user:', this.currentUser?.email)
     this.currentUser = null
     this.token = null
     this.saveToStorage()

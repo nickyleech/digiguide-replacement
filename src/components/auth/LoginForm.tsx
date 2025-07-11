@@ -25,13 +25,17 @@ export default function LoginForm({ onToggleMode, onSuccess }: LoginFormProps) {
     setIsLoading(true)
 
     try {
+      console.log('LoginForm: Attempting login with:', email)
       const response = await login({ email, password })
       if (response.success) {
+        console.log('LoginForm: Login successful, closing modal')
         onSuccess?.()
       } else {
+        console.log('LoginForm: Login failed:', response.error)
         setError(response.error || 'Login failed')
       }
     } catch (error) {
+      console.error('LoginForm: Unexpected error:', error)
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -148,11 +152,31 @@ export default function LoginForm({ onToggleMode, onSuccess }: LoginFormProps) {
             <strong>Regular User:</strong><br />
             Email: demo@digiguide.tv<br />
             Password: demo123
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('demo@digiguide.tv')
+                setPassword('demo123')
+              }}
+              className="ml-2 text-xs bg-blue-100 hover:bg-blue-200 px-2 py-1 rounded"
+            >
+              Use this
+            </button>
           </div>
           <div>
             <strong>Admin User:</strong><br />
             Email: admin@digiguide.tv<br />
             Password: admin123
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('admin@digiguide.tv')
+                setPassword('admin123')
+              }}
+              className="ml-2 text-xs bg-blue-100 hover:bg-blue-200 px-2 py-1 rounded"
+            >
+              Use this
+            </button>
           </div>
         </div>
       </div>

@@ -33,6 +33,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (currentUser && token) {
           setUser(currentUser)
           setIsAuthenticated(true)
+          console.log('AuthContext: Initialized with user:', currentUser.email)
+        } else {
+          console.log('AuthContext: No authenticated user found')
         }
       } catch (error) {
         console.error('Auth initialization error:', error)
@@ -51,6 +54,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (response.success && response.user) {
         setUser(response.user)
         setIsAuthenticated(true)
+        console.log('AuthContext: Login successful for:', response.user.email)
+      } else {
+        console.log('AuthContext: Login failed:', response.error)
       }
       return response
     } finally {
@@ -78,6 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await authService.logout()
       setUser(null)
       setIsAuthenticated(false)
+      console.log('AuthContext: Logout successful')
     } finally {
       setIsLoading(false)
     }

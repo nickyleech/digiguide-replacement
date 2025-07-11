@@ -5,7 +5,6 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useWatchlist } from '@/hooks/useWatchlist'
 import Navigation from '@/components/Navigation'
 import WatchlistButton from '@/components/WatchlistButton'
-import AuthModal from '@/components/auth/AuthModal'
 import { formatTime } from '@/lib/utils'
 import { 
   Bookmark, 
@@ -30,13 +29,12 @@ export default function WatchlistPage() {
     removeFromWatchlist,
     loading 
   } = useWatchlist()
-  const [showAuthModal, setShowAuthModal] = useState(false)
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'watched'>('all')
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     if (!isAuthenticated) {
-      setShowAuthModal(true)
+      window.location.href = '/'
     }
   }, [isAuthenticated])
 
@@ -84,7 +82,7 @@ export default function WatchlistPage() {
                 Keep track of your favorite programmes and never miss a show
               </p>
               <button
-                onClick={() => setShowAuthModal(true)}
+                onClick={() => window.location.href = '/'}
                 className="bg-gray-900 text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors"
               >
                 Sign in to continue
@@ -92,11 +90,6 @@ export default function WatchlistPage() {
             </div>
           </div>
         </div>
-        <AuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-          initialMode="login"
-        />
       </>
     )
   }

@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import AuthModal from '@/components/auth/AuthModal'
+import LoginForm from '@/components/auth/LoginForm'
+import RegisterForm from '@/components/auth/RegisterForm'
 import Navigation from '@/components/Navigation'
 
 export default function HomePage() {
-  const { isAuthenticated } = useAuth()
-  const [showAuthModal, setShowAuthModal] = useState(false)
+  const { isAuthenticated, user, isLoading } = useAuth()
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   const [mounted, setMounted] = useState(false)
   
@@ -16,7 +16,7 @@ export default function HomePage() {
     setMounted(true)
   }, [])
   
-  if (!mounted) {
+  if (!mounted || isLoading) {
     return (
       <div className="min-h-screen bg-primary-50">
         <Navigation />
@@ -28,44 +28,52 @@ export default function HomePage() {
       </div>
     )
   }
+  
+  // If user is authenticated, redirect to guide
+  if (isAuthenticated && user) {
+    return (
+      <div className="min-h-screen bg-primary-50">
+        <Navigation />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center space-y-4">
+            <h1 className="text-2xl font-light text-primary-800">
+              Welcome back, {user.email}!
+            </h1>
+            <p className="text-primary-600">
+              You are successfully signed in.
+            </p>
+            <button
+              onClick={() => window.location.href = '/guide'}
+              className="btn-primary"
+            >
+              Go to TV Guide
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
-  const handleAuthClick = (mode: 'login' | 'register') => {
-    setAuthMode(mode)
-    setShowAuthModal(true)
+  const toggleAuthMode = () => {
+    setAuthMode(authMode === 'login' ? 'register' : 'login')
   }
 
   return (
-    <>
     <div className="min-h-screen bg-primary-50">
       <Navigation />
       
       {/* Sign In Section */}
       <section className="py-8 bg-primary-50 border-b border-primary-200">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-md mx-auto px-6">
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="text-center space-y-4">
-              <h2 className="text-xl font-light text-primary-800">
-                Sign in to access your account
-              </h2>
-              <div className="flex justify-center space-x-4">
-                <button 
-                  onClick={() => handleAuthClick('login')}
-                  className="btn-primary"
-                >
-                  Sign in
-                </button>
-                <button 
-                  onClick={() => handleAuthClick('register')}
-                  className="btn-secondary"
-                >
-                  Create account
-                </button>
-              </div>
-            </div>
+            {authMode === 'login' ? (
+              <LoginForm onToggleMode={toggleAuthMode} />
+            ) : (
+              <RegisterForm onToggleMode={toggleAuthMode} />
+            )}
           </div>
         </div>
       </section>
-
 
       {/* Access Section */}
       <section className="minimal-section bg-primary-50">
@@ -110,7 +118,7 @@ export default function HomePage() {
                   <p>Personal curation</p>
                 </div>
                 <button 
-                  onClick={() => handleAuthClick('register')}
+                  onClick={() => setAuthMode('register')}
                   className="btn-primary w-full"
                 >
                   Try for free
@@ -120,7 +128,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
 
       {/* Footer */}
       <footer className="bg-primary-100 border-t border-primary-200 py-12">
@@ -155,14 +162,6 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
-
     </div>
-    
-    <AuthModal
-      isOpen={showAuthModal}
-      onClose={() => setShowAuthModal(false)}
-      initialMode={authMode}
-    />
-    </>
   )
 }
