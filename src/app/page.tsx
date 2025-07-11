@@ -37,22 +37,27 @@ export default function HomePage() {
 
   const handleAuthClick = (mode: 'login' | 'register') => {
     alert(`Button clicked: ${mode}`)
-    console.log('Before state update:', showAuthModal)
+    console.log('handleAuthClick called')
+    console.log('Current showAuthModal:', showAuthModal)
+    console.log('Current debugCounter:', debugCounter)
+    
+    // Test if state functions are actually being called
+    console.log('About to call setDebugCounter')
+    setDebugCounter(prev => {
+      console.log('setDebugCounter callback - prev:', prev, 'new:', prev + 1)
+      return prev + 1
+    })
+    
+    console.log('About to call setAuthMode')
     setAuthMode(mode)
-    setDebugCounter(prev => prev + 1) // Force re-render
     
-    // Try multiple approaches to ensure state updates
-    setTimeout(() => {
-      setShowAuthModal(true)
-      console.log('setTimeout setShowAuthModal called')
-    }, 0)
-    
+    console.log('About to call setShowAuthModal')
     setShowAuthModal(prev => {
-      console.log('State update callback:', prev, '->', true)
+      console.log('setShowAuthModal callback - prev:', prev, 'new:', true)
       return true
     })
     
-    console.log('After state update call')
+    console.log('All state updates called')
   }
 
   return (
@@ -70,13 +75,23 @@ export default function HomePage() {
               </h2>
               <div className="flex justify-center space-x-4">
                 <button 
-                  onClick={() => handleAuthClick('login')}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    console.log('Button click event fired')
+                    handleAuthClick('login')
+                  }}
                   className="btn-primary"
                 >
                   Sign in
                 </button>
                 <button 
-                  onClick={() => handleAuthClick('register')}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    console.log('Button click event fired')
+                    handleAuthClick('register')
+                  }}
                   className="btn-secondary"
                 >
                   Create account
